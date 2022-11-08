@@ -29,6 +29,8 @@
     <lombok.version>1.18.24</lombok.version>
 
     <jackson-databind.version>2.13.4.2</jackson-databind.version>
+    <guava.version>31.1-jre</guava.version>
+    <sqlite-jdbc.version>3.39.3.0</sqlite-jdbc.version>
 
     <jupiter.junit.version>5.9.1</jupiter.junit.version>
     <mockito.junit.version>4.8.1</mockito.junit.version>
@@ -51,6 +53,16 @@
         <groupId>org.projectlombok</groupId>
         <scope>provided</scope>
         <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>${sqlite-jdbc.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
 
       <dependency>
