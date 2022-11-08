@@ -6,6 +6,6 @@ public record FalconConfig(
     int autonomy,
     String departure,
     String arrival,
-    @JsonProperty("routes_db") String RoutesDbPath) {
+    @JsonProperty("routes_db") String routesDbPath) {
 
 }

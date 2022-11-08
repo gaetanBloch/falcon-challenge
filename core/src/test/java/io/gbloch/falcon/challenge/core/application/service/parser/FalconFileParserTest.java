@@ -26,7 +26,7 @@ class FalconFileParserTest {
         assertThat(falconConfig.departure()).isEqualTo(TATOOINE);
         assertThat(falconConfig.arrival()).isEqualTo(ENDOR);
         assertThat(falconConfig.autonomy()).isEqualTo(FALCON_AUTONOMY);
-        assertThat(falconConfig.RoutesDbPath()).isEqualTo(UNIVERSE_FILE);
+        assertThat(falconConfig.routesDbPath()).isEqualTo(UNIVERSE_FILE);
     }
 
     @Test
