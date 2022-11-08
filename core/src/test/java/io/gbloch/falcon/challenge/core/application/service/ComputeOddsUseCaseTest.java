@@ -17,7 +17,6 @@ import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 import io.gbloch.falcon.challenge.core.application.FalconCoreException;
 import io.gbloch.falcon.challenge.core.application.input.port.ComputeOddsUseCase;
-import io.gbloch.falcon.challenge.core.application.service.OddsService;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbException;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbFileReader;
 import io.gbloch.falcon.challenge.core.application.service.parser.FalconFileException;
@@ -43,6 +42,7 @@ class ComputeOddsUseCaseTest {
     private GalaxyDbFileReader dbFileReader;
 
     private FalconConfig falconConfig;
+    private final MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
 
     private static Empire createEmpire(int countdown) {
         return new Empire(countdown,
@@ -54,6 +54,14 @@ class ComputeOddsUseCaseTest {
     @BeforeEach
     void setUp() {
         this.falconConfig = new FalconConfig(6, TATOOINE, ENDOR, "universe.db");
+        final RowSortedTable<String, String, Integer> routes = TreeBasedTable.create();
+        routes.put(TATOOINE, DAGOBAH, 6);
+        routes.put(DAGOBAH, ENDOR, 4);
+        routes.put(DAGOBAH, HOTH, 1);
+        routes.put(HOTH, ENDOR, 1);
+        routes.put(TATOOINE, HOTH, 6);
+        routes.rowKeySet().forEach((k) ->
+            routes.row(k).forEach((k2, v) -> this.galaxy.putEdgeValue(k, k2, v)));
     }
 
     @ParameterizedTest
@@ -61,6 +69,8 @@ class ComputeOddsUseCaseTest {
     void when_computeOddsWithCountdown_then_getExcpectedOdds(int countdown, int oddsExcepted)
         throws FalconCoreException {
         // GIVEN
+        when(dbFileReader.readFile(anyString())).thenReturn(galaxy);
+        when(falconFileParser.parseFile(anyString())).thenReturn(falconConfig);
         ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
         Empire empire = createEmpire(countdown);
 
@@ -68,7 +78,7 @@ class ComputeOddsUseCaseTest {
         int odds = oddsUseCase.whatAreTheOdds(CONFIG_FILE_PATH, empire);
 
         // THEN
-        assertThat(oddsExcepted).isEqualTo(odds);
+        assertThat(odds).isEqualTo(oddsExcepted);
     }
 
     @Test
