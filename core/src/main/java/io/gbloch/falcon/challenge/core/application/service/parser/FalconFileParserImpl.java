@@ -7,18 +7,21 @@ import java.io.File;
 import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 @Slf4j
 @ApplicationScoped
 final class FalconFileParserImpl implements FalconFileParser {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Override
     public FalconConfig parseFile(String filePath) {
         FalconConfig falconConfig;
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            falconConfig = objectMapper.readValue(new File(filePath), FalconConfig.class);
+            falconConfig = MAPPER.readValue(new File(filePath), FalconConfig.class);
+            falconConfig.validate();
         } catch (JsonMappingException e) {
             logDbError(e);
             throw new FalconFileInvalidException(

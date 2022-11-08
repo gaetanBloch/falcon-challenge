@@ -42,8 +42,18 @@ final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
             ResultSet resultSet = statement.executeQuery(SQL_QUERY);
             while (resultSet.next()) {
                 String origin = resultSet.getString("origin");
+                if(origin == null || origin.isBlank()){
+                    throw new IllegalArgumentException("Origin cannot be null or empty");
+                }
                 String destination = resultSet.getString("destination");
+                if(destination == null || destination.isBlank()){
+                    throw new IllegalArgumentException("Destination cannot be null or empty");
+                }
                 int travelTime = resultSet.getInt("travel_time");
+                if(travelTime <= 0){
+                    throw new IllegalArgumentException("Travel time must be greater than 0");
+                }
+
                 routes.put(origin, destination, travelTime);
             }
         }

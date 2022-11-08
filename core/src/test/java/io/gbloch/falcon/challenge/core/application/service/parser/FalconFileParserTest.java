@@ -2,6 +2,7 @@ package io.gbloch.falcon.challenge.core.application.service.parser;
 
 import static io.gbloch.falcon.challenge.core.application.TestUtils.CONFIG_FILE_PATH;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.CONFIG_FILE_PATH_INVALID;
+import static io.gbloch.falcon.challenge.core.application.TestUtils.CONFIG_FILE_PATH_VIOLATION;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.ENDOR;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.FALCON_AUTONOMY;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.TATOOINE;
@@ -42,6 +43,21 @@ class FalconFileParserTest {
         // THEN
         assertThat(exception).isExactlyInstanceOf(FalconFileInvalidException.class)
             .hasMessageContaining("Invalid");
+    }
+
+    @Test
+    void when_parseFileWithInvalidConfig_then_getException() {
+        // GIVEN
+        FalconFileParser falconFileParser = new FalconFileParserImpl();
+
+        // WHEN
+        Exception exception = catchException(
+            () -> falconFileParser.parseFile(CONFIG_FILE_PATH_VIOLATION)
+        );
+
+        // THEN
+        assertThat(exception).isExactlyInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("autonomy must be positive");
     }
 
     @Test

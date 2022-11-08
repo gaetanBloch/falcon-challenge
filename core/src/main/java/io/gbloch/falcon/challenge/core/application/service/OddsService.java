@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public final class OddsService implements ComputeOddsUseCase {
+final class OddsService implements ComputeOddsUseCase {
 
     final FalconFileParser falconFileParser;
     final GalaxyDbFileReader galaxyDbFileReader;
@@ -25,6 +25,7 @@ public final class OddsService implements ComputeOddsUseCase {
 
     @Override
     public int whatAreTheOdds(String configFilePath, Empire empire) throws FalconCoreException {
+        empire.validate();
         try {
             log.info("Computing odds for empire {}...", empire);
             this.empire = empire;

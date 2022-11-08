@@ -11,4 +11,8 @@ final class FalconFileInvalidException extends FalconFileException {
         super(message, cause);
     }
 
+    public FalconFileInvalidException(String message) {
+        super(message);
+    }
+
 }

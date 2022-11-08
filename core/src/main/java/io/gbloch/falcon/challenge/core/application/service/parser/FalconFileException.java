@@ -10,4 +10,8 @@ public abstract class FalconFileException extends RuntimeException {
     FalconFileException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    FalconFileException(String message) {
+        super(message);
+    }
 }

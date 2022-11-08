@@ -1,4 +1,4 @@
-package io.gbloch.falcon.challenge.core.application.input.port;
+package io.gbloch.falcon.challenge.core.application.service;
 
 import static io.gbloch.falcon.challenge.core.application.TestUtils.CONFIG_FILE_PATH;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.DAGOBAH;
@@ -16,6 +16,7 @@ import com.google.common.collect.TreeBasedTable;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 import io.gbloch.falcon.challenge.core.application.FalconCoreException;
+import io.gbloch.falcon.challenge.core.application.input.port.ComputeOddsUseCase;
 import io.gbloch.falcon.challenge.core.application.service.OddsService;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbException;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbFileReader;
@@ -101,5 +102,20 @@ class ComputeOddsUseCaseTest {
 
         // THEN
         assertThat(exception).isExactlyInstanceOf(FalconCoreException.class);
+    }
+
+    @Test
+    void given_invalidEmpire_when_computeOdds_then_getException() {
+        // GIVEN
+        Empire empire = createEmpire(-1);
+        ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
+
+        // WHEN
+        Exception exception = catchException(
+            () -> oddsUseCase.whatAreTheOdds(CONFIG_FILE_PATH, empire)
+        );
+
+        // THEN
+        assertThat(exception).isExactlyInstanceOf(IllegalArgumentException.class);
     }
 }
