@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 class GalaxyDbFileReaderTest {
     @Test
-    void when_readDbFile_then_getTableRows() throws GalaxyDbException {
+    void when_readDbFile_then_getTableRows() {
         // GIVEN
         GalaxyDbFileReader galaxyDbFileReader = new GalaxyDbFileReaderImpl();
 

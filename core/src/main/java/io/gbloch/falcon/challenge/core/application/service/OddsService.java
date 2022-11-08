@@ -10,22 +10,29 @@ import io.gbloch.falcon.challenge.core.application.service.parser.FalconFilePars
 import io.gbloch.falcon.challenge.core.domain.Empire;
 import io.gbloch.falcon.challenge.core.domain.FalconConfig;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public final class OddsService implements ComputeOddsUseCase {
 
     final FalconFileParser falconFileParser;
     final GalaxyDbFileReader galaxyDbFileReader;
+
+    Empire empire;
     FalconConfig falconConfig;
     MutableValueGraph<String, Integer> galaxy;
 
     @Override
     public int whatAreTheOdds(String configFilePath, Empire empire) throws FalconCoreException {
         try {
-            falconConfig = falconFileParser.parseFile(configFilePath);
-            galaxy = galaxyDbFileReader.readFile(falconConfig.routesDbPath());
+            this.empire = empire;
+            this.falconConfig = falconFileParser.parseFile(configFilePath);
+            this.galaxy = galaxyDbFileReader.readFile(falconConfig.routesDbPath());
         } catch (FalconFileException | GalaxyDbException e) {
             throw new FalconCoreException(e);
+        } catch (Exception e) {
+            throw new FalconCoreException("Unexcpected exception", e);
         }
         return -1;
     }

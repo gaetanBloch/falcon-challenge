@@ -11,7 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 final class FalconFileParserImpl implements FalconFileParser {
 
     @Override
-    public FalconConfig parseFile(String filePath) throws FalconFileException {
+    public FalconConfig parseFile(String filePath) {
         FalconConfig falconConfig;
         ObjectMapper objectMapper = new ObjectMapper();
 

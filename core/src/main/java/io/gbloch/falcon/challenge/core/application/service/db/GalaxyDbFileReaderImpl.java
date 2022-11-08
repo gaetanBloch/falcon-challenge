@@ -18,8 +18,7 @@ final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
     private static final String JDBC_PREFIX = "jdbc:sqlite:";
 
     @Override
-    public MutableValueGraph<String, Integer> readFile(String dbFilePath)
-        throws GalaxyDbException {
+    public MutableValueGraph<String, Integer> readFile(String dbFilePath) {
         MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
         String dbConnectionString = JDBC_PREFIX + dbFilePath;
         try (Connection connection = DriverManager.getConnection(dbConnectionString)) {

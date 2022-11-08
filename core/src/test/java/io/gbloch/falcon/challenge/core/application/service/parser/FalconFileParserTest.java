@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class FalconFileParserTest {
 
     @Test
-    void when_parseFile_then_getProperConfiguration() throws FalconFileException {
+    void when_parseFile_then_getProperConfiguration() {
         // GIVEN
         FalconFileParser falconFileParser = new FalconFileParserImpl();
 

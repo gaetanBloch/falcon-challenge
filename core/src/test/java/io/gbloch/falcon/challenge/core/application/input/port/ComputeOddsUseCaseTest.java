@@ -71,7 +71,7 @@ class ComputeOddsUseCaseTest {
     }
 
     @Test
-    void given_configParsingError_when_computeOdds_then_getException() throws FalconFileException {
+    void given_configParsingError_when_computeOdds_then_getException() {
         // GIVEN
         when(falconFileParser.parseFile(anyString())).thenThrow(mock(FalconFileException.class));
         Empire empire = createEmpire(0);
@@ -87,8 +87,7 @@ class ComputeOddsUseCaseTest {
     }
 
     @Test
-    void given_galaxyDbError_when_computeOdds_then_getException()
-        throws GalaxyDbException, FalconFileException {
+    void given_galaxyDbError_when_computeOdds_then_getException() {
         // GIVEN
         when(dbFileReader.readFile(anyString())).thenThrow(GalaxyDbException.class);
         when(falconFileParser.parseFile(anyString())).thenReturn(falconConfig);

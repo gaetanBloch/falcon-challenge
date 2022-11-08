@@ -10,4 +10,8 @@ public final class FalconCoreException extends Exception {
     public FalconCoreException(Throwable cause) {
         super(cause);
     }
+
+    public FalconCoreException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
