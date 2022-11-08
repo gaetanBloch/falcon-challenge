@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.gbloch.falcon.challenge</groupId>
-  <artifactId>falconchallenge</artifactId>
+  <artifactId>falcon-challenge</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -22,7 +22,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+    <quarkus.platform.version>2.13.3.Final</quarkus.platform.version>
+
     <lombok.version>1.18.24</lombok.version>
+
+    <jackson-databind.version>2.13.4.2</jackson-databind.version>
 
     <jupiter.junit.version>5.9.1</jupiter.junit.version>
     <mockito.junit.version>4.8.1</mockito.junit.version>
@@ -33,10 +39,24 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
         <artifactId>lombok</artifactId>
         <groupId>org.projectlombok</groupId>
         <scope>provided</scope>
         <version>${lombok.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind.version}</version>
       </dependency>
 
       <dependency>
