@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.enterprise.context.ApplicationScoped;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ApplicationScoped
 final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
 
@@ -27,6 +29,7 @@ final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
                 (k) -> routes.row(k).forEach((k2, v) -> galaxy.putEdgeValue(k, k2, v))
             );
         } catch (SQLException e) {
+            log.error("Error while reading database file", e);
             throw new GalaxyDbException("Error while reading database file", e);
         }
         return galaxy;

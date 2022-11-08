@@ -26,14 +26,17 @@ public final class OddsService implements ComputeOddsUseCase {
     @Override
     public int whatAreTheOdds(String configFilePath, Empire empire) throws FalconCoreException {
         try {
+            log.info("Computing odds for empire {}...", empire);
             this.empire = empire;
             this.falconConfig = falconFileParser.parseFile(configFilePath);
             this.galaxy = galaxyDbFileReader.readFile(falconConfig.routesDbPath());
         } catch (FalconFileException | GalaxyDbException e) {
             throw new FalconCoreException(e);
         } catch (Exception e) {
-            throw new FalconCoreException("Unexcpected exception", e);
+            log.error("Unexpected error", e);
+            throw new FalconCoreException("Unexpected exception", e);
         }
+        log.info("Computing odds for empire {}... OK", empire);
         return -1;
     }
 }
