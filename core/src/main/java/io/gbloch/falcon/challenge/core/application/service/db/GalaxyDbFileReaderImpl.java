@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ApplicationScoped
-final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
+public final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
 
     private static final String SQL_QUERY = "SELECT ORIGIN, DESTINATION, TRAVEL_TIME FROM ROUTES";
     private static final String JDBC_PREFIX = "jdbc:sqlite:";

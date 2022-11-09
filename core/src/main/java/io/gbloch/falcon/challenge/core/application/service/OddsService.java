@@ -2,7 +2,6 @@ package io.gbloch.falcon.challenge.core.application.service;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.graph.MutableValueGraph;
 import io.gbloch.falcon.challenge.core.application.FalconCoreException;
 import io.gbloch.falcon.challenge.core.application.input.port.ComputeOddsUseCase;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbException;
@@ -10,7 +9,6 @@ import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbFileReader
 import io.gbloch.falcon.challenge.core.application.service.parser.FalconFileException;
 import io.gbloch.falcon.challenge.core.application.service.parser.FalconFileParser;
 import io.gbloch.falcon.challenge.core.domain.Empire;
-import io.gbloch.falcon.challenge.core.domain.FalconConfig;
 import io.gbloch.falcon.challenge.core.domain.JourneyLog;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,7 +17,10 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,12 +33,16 @@ final class OddsService implements ComputeOddsUseCase {
 
     final Multimap<String, Integer> bountyHunterPresence = HashMultimap.create();
 
+    @Inject
+    @Setter
+    Validator validator;
+
     Empire empire;
     JourneyContext journeyContext;
 
     @Override
     public int whatAreTheOdds(String configFilePath, Empire empire) throws FalconCoreException {
-        empire.validate();
+        empire.validate(validator);
         try {
             log.info("Computing odds for empire {}...", empire);
             initJourney(configFilePath, empire);
@@ -68,7 +73,8 @@ final class OddsService implements ComputeOddsUseCase {
         this.empire = empire;
         this.empire.bountyHunters().forEach((bountyHunter) ->
             this.bountyHunterPresence.put(bountyHunter.planet(), bountyHunter.day()));
-        this.journeyContext = JourneyContext.getInstance(falconFileParser, galaxyDbFileReader, configFilePath);
+        this.journeyContext = JourneyContext.getInstance(falconFileParser, galaxyDbFileReader,
+            configFilePath);
     }
 
     private List<JourneyLog> getSuccessfulPaths() {
@@ -85,7 +91,8 @@ final class OddsService implements ComputeOddsUseCase {
         while (!journey.isEmpty()) {
             final JourneyLog journeyLog = journey.poll();
 
-            for (String nextPlanet : journeyContext.getGalaxy().successors(journeyLog.getCurrentPlanet())) {
+            for (String nextPlanet : journeyContext.getGalaxy()
+                .successors(journeyLog.getCurrentPlanet())) {
                 final Optional<Integer> daysToNextPlanetOpt = journeyContext.getGalaxy().edgeValue(
                     journeyLog.getCurrentPlanet(),
                     nextPlanet

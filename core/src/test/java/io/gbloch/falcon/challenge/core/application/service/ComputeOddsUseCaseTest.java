@@ -9,6 +9,7 @@ import static io.gbloch.falcon.challenge.core.application.TestUtils.TATOOINE;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.createEmpire;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
+import static org.mockito.Mockito.mock;
 
 import com.google.common.collect.RowSortedTable;
 import com.google.common.collect.TreeBasedTable;
@@ -17,28 +18,37 @@ import com.google.common.graph.ValueGraphBuilder;
 import io.gbloch.falcon.challenge.core.application.FalconCoreException;
 import io.gbloch.falcon.challenge.core.application.input.port.ComputeOddsUseCase;
 import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbFileReader;
+import io.gbloch.falcon.challenge.core.application.service.db.GalaxyDbFileReaderImpl;
 import io.gbloch.falcon.challenge.core.application.service.parser.FalconFileParser;
+import io.gbloch.falcon.challenge.core.application.service.parser.FalconFileParserImpl;
 import io.gbloch.falcon.challenge.core.domain.Empire;
+import io.quarkus.test.junit.QuarkusMock;
+import io.quarkus.test.junit.QuarkusTest;
+import javax.inject.Inject;
+import javax.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+@QuarkusTest
 class ComputeOddsUseCaseTest {
 
     private final MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
-    @Mock
-    private FalconFileParser falconFileParser;
-    @Mock
-    private GalaxyDbFileReader dbFileReader;
+    @Inject
+    Validator validator;
+    @Inject
+    FalconFileParser falconFileParser;
+    @Inject
+    GalaxyDbFileReader dbFileReader;
 
     @BeforeEach
     void setUp() {
+        QuarkusMock.installMockForType(mock(FalconFileParserImpl.class), FalconFileParser.class);
+        QuarkusMock.installMockForType(mock(GalaxyDbFileReaderImpl.class),
+            GalaxyDbFileReader.class);
+
         final RowSortedTable<String, String, Integer> routes = TreeBasedTable.create();
         routes.put(TATOOINE, DAGOBAH, 6);
         routes.put(DAGOBAH, ENDOR, 4);
@@ -59,6 +69,7 @@ class ComputeOddsUseCaseTest {
             .thenReturn(FALCON_CONFIG);
         ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
         Empire empire = createEmpire(countdown);
+        oddsUseCase.setValidator(validator);
 
         // WHEN
         int odds = oddsUseCase.whatAreTheOdds(CONFIG_FILE_PATH, empire);
@@ -72,6 +83,7 @@ class ComputeOddsUseCaseTest {
         // GIVEN
         Empire empire = createEmpire(-1);
         ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
+        oddsUseCase.setValidator(validator);
 
         // WHEN
         Exception exception = catchException(

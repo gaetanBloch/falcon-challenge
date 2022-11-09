@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.enums.ParameterIn;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Encoding;
@@ -80,6 +79,7 @@ public class OddsController {
         try {
             empire = MAPPER.readValue(Files.readString(fileInput.file.toPath()), Empire.class);
         } catch (IOException e) {
+            log.error("Error while reading the empire file {}", fileInput.file.toPath(), e);
             return new ErrorResponse(
                 "Error while reading the empire file",
                 Status.BAD_REQUEST
@@ -88,6 +88,7 @@ public class OddsController {
         URL falconConfigPath = Thread.currentThread().getContextClassLoader()
             .getResource("millenium-falcon.json");
         if (falconConfigPath == null) {
+            log.error("millenium-falcon.json not found");
             return new ErrorResponse(
                 "Could not find the Falcon Config file",
                 Status.INTERNAL_SERVER_ERROR

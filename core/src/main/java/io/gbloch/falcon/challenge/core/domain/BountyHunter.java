@@ -2,10 +2,12 @@ package io.gbloch.falcon.challenge.core.domain;
 
 
 import io.gbloch.falcon.challenge.core.common.SelfValidator;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@RegisterForReflection
 public record BountyHunter(
     @NotNull(message = "The planet cannot be null")
     @NotEmpty(message = "The planet cannot be empty")

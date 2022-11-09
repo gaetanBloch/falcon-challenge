@@ -2,10 +2,12 @@ package io.gbloch.falcon.challenge.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.gbloch.falcon.challenge.core.common.SelfValidator;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@RegisterForReflection
 public record FalconConfig(
     @Min(value = 1, message = "The falcon's autonomy must be positive") int autonomy,
     @NotNull(message = "The falcon's departure planet must be defined")

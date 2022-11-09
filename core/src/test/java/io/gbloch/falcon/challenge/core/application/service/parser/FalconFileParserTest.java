@@ -11,14 +11,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
 import io.gbloch.falcon.challenge.core.domain.FalconConfig;
+import io.quarkus.test.junit.QuarkusTest;
+import javax.inject.Inject;
+import javax.validation.Validator;
 import org.junit.jupiter.api.Test;
 
+@QuarkusTest
 class FalconFileParserTest {
+
+    @Inject
+    Validator validator;
 
     @Test
     void when_parseFile_then_getProperConfiguration() {
         // GIVEN
         FalconFileParser falconFileParser = new FalconFileParserImpl();
+        falconFileParser.setValidator(validator);
 
         // WHEN
         FalconConfig falconConfig = falconFileParser.parseFile(CONFIG_FILE_PATH);
@@ -49,6 +57,7 @@ class FalconFileParserTest {
     void when_parseFileWithInvalidConfig_then_getException() {
         // GIVEN
         FalconFileParser falconFileParser = new FalconFileParserImpl();
+        falconFileParser.setValidator(validator);
 
         // WHEN
         Exception exception = catchException(
