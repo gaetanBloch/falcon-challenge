@@ -18,11 +18,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.stream.Stream;
+import javax.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@ApplicationScoped
 final class OddsService implements ComputeOddsUseCase {
 
     final FalconFileParser falconFileParser;

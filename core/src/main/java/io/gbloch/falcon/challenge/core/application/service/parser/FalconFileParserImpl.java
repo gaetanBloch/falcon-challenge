@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-import javax.validation.Validation;
-import javax.validation.Validator;
 
 @Slf4j
 @ApplicationScoped

@@ -43,7 +43,7 @@
       <artifactId>validation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
     </dependency>
     <dependency>
@@ -63,6 +63,7 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
     </dependency>
+
     <dependency>
       <artifactId>assertj-core</artifactId>
       <groupId>org.assertj</groupId>
