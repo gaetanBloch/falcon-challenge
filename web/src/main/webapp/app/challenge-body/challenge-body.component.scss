@@ -1,0 +1,58 @@
+mat-toolbar {
+  display: grid;
+  grid: auto-flow / 1fr auto;
+}
+
+.logo {
+  margin-right: 0.5em;
+  vertical-align: center;
+}
+
+.title {
+  vertical-align: text-bottom;
+  font-family: starjedi, Roboto, "Helvetica Neue", sans-serif;
+}
+
+.main-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.star-wars {
+  font-family: starjedi, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 6em;
+  margin: 0.8em;
+}
+
+.file-uploader {
+  width: 50%;
+  text-align: center;
+}
+
+.file-content {
+  margin-top: 1em;
+  font-family: Monaco, "Lucida Console", monospace;
+  font-size: 1em;
+}
+
+.result-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1.5em;
+}
+
+.button-container {
+  margin-top: 2em;
+}
+
+.result-odds-container {
+  text-align: center;
+  font-size: 2em;
+  font-family: starjedi, Roboto, "Helvetica Neue", sans-serif;
+  margin-top: 0.7em;
+  color: white;
+}
+
+

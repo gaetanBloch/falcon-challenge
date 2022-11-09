@@ -1,0 +1,12 @@
+<section>
+  <label for="file">File: </label>
+  <button (click)="fileInput.click()" mat-raised-button type="button">
+    Choose File
+  </button>
+  <input #fileInput
+         (change)="onFileSelected()"
+         hidden
+         id="file"
+         accept="application/json"
+         type="file">
+</section>

@@ -1,0 +1,30 @@
+<div class="uploader-container">
+  <mat-card>
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-content>
+      <ul>
+        <li *ngFor="let file of fileNames">
+          <span id="file-label">{{file}}</span>
+        </li>
+      </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      <button (click)="onClick()"
+              [disabled]="!multiple && fileNames.length === 1"
+              color="primary"
+              mat-button
+              role="button">
+        <mat-icon>file_upload</mat-icon>
+        Upload File{{multiple ? 's' : ''}}
+      </button>
+      <ng-content></ng-content>
+    </mat-card-actions>
+  </mat-card>
+  <input #fileUpload
+         [multiple]="multiple"
+         accept="application/json"
+         id="fileUpload"
+         name="fileUpload"
+         style="display:none;"
+         type="file"/>
+</div>

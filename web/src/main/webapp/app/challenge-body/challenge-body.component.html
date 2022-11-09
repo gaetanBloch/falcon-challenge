@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+    <span>
+      <span class="logo"><mat-icon>star</mat-icon></span>
+      <span class="title">Millenium Falcon Challenge</span>
+    </span>
+  <img src="../assets/giskard-logo.png" alt="Giskard Logo" width="150">
+</mat-toolbar>
+<main class="main-container">
+  <div class="star-wars primary">Star wars</div>
+  <div class="file-uploader">
+    <app-file-uploader
+      (filesUploaded)="onFileUploaded($event)"
+      title="Upload Intercepted Empire File">
+      <p *ngIf="countdown > 0" class="file-content">
+        You have to reach your destination within
+        <strong class="primary">{{countdown}}</strong>
+        days before the Death Star destroys it!
+      </p>
+    </app-file-uploader>
+  </div>
+  <div class="result-container" *ngIf="countdown > 0">
+    <button (click)="onUpload()"
+            color="primary"
+            mat-raised-button
+            type="submit">
+      <mat-icon>flight_takeoff</mat-icon>
+      Take-off
+    </button>
+    <div  *ngIf="odds" class="result-odds-container">
+      <div class="result-odds">The Millenium falcon has
+        <strong class="primary" style='font-family: Consolas, "Helvetica Neue", sans-serif'>{{odds}}% </strong> chance
+      </div>
+      <div style="margin-top: 0.5em;">to reach its destination!</div>
+    </div>
+  </div>
+</main>

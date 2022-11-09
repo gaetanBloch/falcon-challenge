@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($webapp-theme) {
+  // Get the color config from the theme.
+  $color-config: mat.get-color-config($webapp-theme);
+  // Get the primary color palette from the color-config.
+  $primary-palette: map.get($color-config, 'primary');
+  .primary {
+    color: map.get($primary-palette, 500);
+  }
+}
