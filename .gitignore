@@ -283,3 +283,5 @@ dist
 # Angular
 ######################
 web/.angular
+
+!cli/scripts/give-me-the-odds.jar
