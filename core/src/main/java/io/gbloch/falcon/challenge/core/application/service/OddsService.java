@@ -31,8 +31,7 @@ final class OddsService implements ComputeOddsUseCase {
     final Multimap<String, Integer> bountyHunterPresence = HashMultimap.create();
 
     Empire empire;
-    FalconConfig falconConfig;
-    MutableValueGraph<String, Integer> galaxy;
+    JourneyContext journeyContext;
 
     @Override
     public int whatAreTheOdds(String configFilePath, Empire empire) throws FalconCoreException {
@@ -65,10 +64,9 @@ final class OddsService implements ComputeOddsUseCase {
 
     private void initJourney(String configFilePath, Empire empire) {
         this.empire = empire;
-        this.falconConfig = falconFileParser.parseFile(configFilePath);
-        this.galaxy = galaxyDbFileReader.readFile(falconConfig.routesDbPath());
         this.empire.bountyHunters().forEach((bountyHunter) ->
             this.bountyHunterPresence.put(bountyHunter.planet(), bountyHunter.day()));
+        this.journeyContext = JourneyContext.getInstance(falconFileParser, galaxyDbFileReader, configFilePath);
     }
 
     private List<JourneyLog> getSuccessfulPaths() {
@@ -76,17 +74,17 @@ final class OddsService implements ComputeOddsUseCase {
         final List<JourneyLog> successfulJourneys = new ArrayList<>();
 
         journey.add(new JourneyLog(
-            falconConfig.departure(),
+            journeyContext.getFalconConfig().departure(),
             0,
-            falconConfig.autonomy(),
+            journeyContext.getFalconConfig().autonomy(),
             new ArrayList<>())
         );
 
         while (!journey.isEmpty()) {
             final JourneyLog journeyLog = journey.poll();
 
-            for (String nextPlanet : galaxy.successors(journeyLog.getCurrentPlanet())) {
-                final Optional<Integer> daysToNextPlanetOpt = galaxy.edgeValue(
+            for (String nextPlanet : journeyContext.getGalaxy().successors(journeyLog.getCurrentPlanet())) {
+                final Optional<Integer> daysToNextPlanetOpt = journeyContext.getGalaxy().edgeValue(
                     journeyLog.getCurrentPlanet(),
                     nextPlanet
                 );
@@ -142,7 +140,7 @@ final class OddsService implements ComputeOddsUseCase {
         String nextPlanet,
         JourneyLog nextJourney
     ) {
-        if (nextPlanet.equals(falconConfig.arrival())) {
+        if (nextPlanet.equals(journeyContext.getFalconConfig().arrival())) {
             log.debug("Found successful journey: {}", nextJourney);
             successfulJourneys.add(nextJourney);
         }
@@ -161,7 +159,7 @@ final class OddsService implements ComputeOddsUseCase {
             journey.add(new JourneyLog(
                 journeyLog.getCurrentPlanet(),
                 journeyLog.getTravelDays() + 1,
-                falconConfig.autonomy(),
+                journeyContext.getFalconConfig().autonomy(),
                 route
             ));
         }
@@ -175,7 +173,7 @@ final class OddsService implements ComputeOddsUseCase {
             String destination = route.get(i + 1);
             days += planet.equals(destination) ?
                 1 :
-                galaxy.edgeValueOrDefault(planet, destination, 0);
+                journeyContext.getGalaxy().edgeValueOrDefault(planet, destination, 0);
             if (days == 0) {
                 throw new IllegalStateException("Days distance between planets cannot be 0");
             }

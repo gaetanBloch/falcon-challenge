@@ -2,9 +2,12 @@ package io.gbloch.falcon.challenge.core.application.service;
 
 import static io.gbloch.falcon.challenge.core.application.TestUtils.CONFIG_FILE_PATH;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.DAGOBAH;
+import static io.gbloch.falcon.challenge.core.application.TestUtils.DB_FILE_PATH;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.ENDOR;
+import static io.gbloch.falcon.challenge.core.application.TestUtils.FALCON_CONFIG;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.HOTH;
 import static io.gbloch.falcon.challenge.core.application.TestUtils.TATOOINE;
+import static io.gbloch.falcon.challenge.core.application.TestUtils.createEmpire;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,7 +34,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 class ComputeOddsUseCaseTest {
@@ -41,19 +46,10 @@ class ComputeOddsUseCaseTest {
     @Mock
     private GalaxyDbFileReader dbFileReader;
 
-    private FalconConfig falconConfig;
     private final MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
-
-    private static Empire createEmpire(int countdown) {
-        return new Empire(countdown,
-            Set.of(new BountyHunter(HOTH, 6),
-                new BountyHunter(HOTH, 7),
-                new BountyHunter(HOTH, 8)));
-    }
 
     @BeforeEach
     void setUp() {
-        this.falconConfig = new FalconConfig(6, TATOOINE, ENDOR, "universe.db");
         final RowSortedTable<String, String, Integer> routes = TreeBasedTable.create();
         routes.put(TATOOINE, DAGOBAH, 6);
         routes.put(DAGOBAH, ENDOR, 4);
@@ -69,8 +65,8 @@ class ComputeOddsUseCaseTest {
     void when_computeOddsWithCountdown_then_getExcpectedOdds(int countdown, int oddsExcepted)
         throws FalconCoreException {
         // GIVEN
-        when(dbFileReader.readFile(anyString())).thenReturn(galaxy);
-        when(falconFileParser.parseFile(anyString())).thenReturn(falconConfig);
+        Mockito.lenient().when(dbFileReader.readFile("universe.db")).thenReturn(galaxy);
+        Mockito.lenient().when(falconFileParser.parseFile(CONFIG_FILE_PATH)).thenReturn(FALCON_CONFIG);
         ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
         Empire empire = createEmpire(countdown);
 
@@ -79,39 +75,6 @@ class ComputeOddsUseCaseTest {
 
         // THEN
         assertThat(odds).isEqualTo(oddsExcepted);
-    }
-
-    @Test
-    void given_configParsingError_when_computeOdds_then_getException() {
-        // GIVEN
-        when(falconFileParser.parseFile(anyString())).thenThrow(mock(FalconFileException.class));
-        Empire empire = createEmpire(0);
-        ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
-
-        // WHEN
-        Exception exception = catchException(
-            () -> oddsUseCase.whatAreTheOdds(CONFIG_FILE_PATH, empire)
-        );
-
-        // THEN
-        assertThat(exception).isExactlyInstanceOf(FalconCoreException.class);
-    }
-
-    @Test
-    void given_galaxyDbError_when_computeOdds_then_getException() {
-        // GIVEN
-        when(dbFileReader.readFile(anyString())).thenThrow(GalaxyDbException.class);
-        when(falconFileParser.parseFile(anyString())).thenReturn(falconConfig);
-        Empire empire = createEmpire(0);
-        ComputeOddsUseCase oddsUseCase = new OddsService(falconFileParser, dbFileReader);
-
-        // WHEN
-        Exception exception = catchException(
-            () -> oddsUseCase.whatAreTheOdds(CONFIG_FILE_PATH, empire)
-        );
-
-        // THEN
-        assertThat(exception).isExactlyInstanceOf(FalconCoreException.class);
     }
 
     @Test
