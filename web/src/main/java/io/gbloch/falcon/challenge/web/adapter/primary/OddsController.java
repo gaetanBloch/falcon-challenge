@@ -7,6 +7,7 @@ import io.gbloch.falcon.challenge.core.domain.Empire;
 import io.smallrye.common.constraint.NotNull;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import javax.ws.rs.Consumes;
@@ -14,12 +15,14 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -85,17 +88,24 @@ public class OddsController {
                 Status.BAD_REQUEST
             ).toResponse();
         }
-        URL falconConfigPath = Thread.currentThread().getContextClassLoader()
-            .getResource("millenium-falcon.json");
-        if (falconConfigPath == null) {
-            log.error("millenium-falcon.json not found");
+
+        // Need to get the inputstream of the resource file inside the native/UBER-JAR because
+        // the file is not accessible from the file system as a regular jar file.
+        File file;
+        try (InputStream configStream = Thread.currentThread().getContextClassLoader()
+            .getResourceAsStream("millenium-falcon.json")){
+            file = File.createTempFile("millenium-falcon", ".json");
+            file.deleteOnExit();
+            FileUtils.copyInputStreamToFile(configStream, file);
+        } catch (IOException e) {
             return new ErrorResponse(
                 "Could not find the Falcon Config file",
                 Status.INTERNAL_SERVER_ERROR
             ).toResponse();
         }
+
         try {
-            int odds = computeOddsUseCase.whatAreTheOdds(falconConfigPath.getPath(), empire);
+            int odds = computeOddsUseCase.whatAreTheOdds(file.getPath(), empire);
             return Response.ok(odds).build();
         } catch (FalconCoreException e) {
             return new ErrorResponse(e).toResponse();
