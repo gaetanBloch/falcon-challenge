@@ -35,7 +35,7 @@ Open your browser on [http://localhost:8080](http://localhost:8080), you should 
 
 ![UI](resources/ui.png)
 
-You can also access to the swagger documentation page on [swagger-ui](http://localhost:8080/q/swgger-ui), you should have a web page looking like this:
+You can also access to the swagger documentation page on [swagger-ui](http://localhost:8080/q/swagger-ui), you should have a web page looking like this:
 
 ![UI](resources/swagger-ui.png)
 
