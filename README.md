@@ -26,7 +26,39 @@ The web application will be composed of a backend (the Millennium Falcon onboard
 
 To run the web application:
 
-```bash
+```shell
 cd falcon-chalenge-0.1.0/web
 ./falcon-chalenge-0.1.0.sh
+```
+
+Open your browser on [http://localhost:8080](http://localhost:8080), you should have a web page looking like this:
+
+![UI](resources/ui.png)
+
+You can also access to the swagger documentation page on [swagger-ui](http://localhost:8080/q/swgger-ui), you should have a web page looking like this:
+
+![UI](resources/swagger-ui.png)
+
+### CLI Application
+
+To run the cli application:
+
+```shell
+cd falcon-challenge-0.1.0/cli
+./give-me-the-odds.sh <falconConfigFile> <empireFile>
+```
+
+You can see the usage of the commande by typing:
+
+```shell
+./give-me-the-odds.sh --help
+Usage: give-me-the-odds [-hV] <falconConfigFilePath> <empireFilePath>
+Get the odds of reaching the destination planet
+      <falconConfigFilePath>
+                         The abslute or relative path to the Millenium Falcon's
+                           config file
+      <empireFilePath>   The absolute or relative path to the Intercepted
+                           Empire file
+  -h, --help             Show this help message and exit.
+  -V, --version          Print version information and exit.
 ```
