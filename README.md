@@ -26,7 +26,7 @@ The web application will be composed of a backend (the Millennium Falcon onboard
 
 To run the web application:
 
-```shell
+```sh
 cd falcon-chalenge-0.1.0/web
 ./falcon-chalenge-0.1.0.sh
 ```
@@ -43,14 +43,14 @@ You can also access to the swagger documentation page on [swagger-ui](http://loc
 
 To run the cli application:
 
-```shell
+```sh
 cd falcon-challenge-0.1.0/cli
 ./give-me-the-odds.sh <falconConfigFile> <empireFile>
 ```
 
 You can see the usage of the commande by typing:
 
-```shell
+```sh
 ./give-me-the-odds.sh --help
 Usage: give-me-the-odds [-hV] <falconConfigFilePath> <empireFilePath>
 Get the odds of reaching the destination planet
@@ -61,4 +61,40 @@ Get the odds of reaching the destination planet
                            Empire file
   -h, --help             Show this help message and exit.
   -V, --version          Print version information and exit.
+```
+
+## Repository
+
+To build the project without tests:
+
+```sh
+git clone https://github.com/gaetanBloch/falcon-challenge.git
+cd falcon-challenge
+./mvnw clean package -DskipTests
+```
+
+To run the tests of the project:
+
+```sh
+git clone https://github.com/gaetanBloch/falcon-challenge.git
+cd falcon-challenge
+./mvnw clean test
+```
+
+To run the project in dev mode:
+
+```sh
+git clone https://github.com/gaetanBloch/falcon-challenge.git
+cd falcon-challenge
+./mvnw
+```
+
+To change the *millenium-falcon.json* and execute the web application:
+
+```sh
+git clone https://github.com/gaetanBloch/falcon-challenge.git
+cd falcon-challenge
+vim web/src/main/resources/millenium-falcon.json
+./mvnw clean package
+java -jar web/target/falcon-challenge-0.1.1-SNAPSHOT-runner.jar
 ```
