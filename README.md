@@ -31,6 +31,14 @@ cd falcon-chalenge-0.1.0/web
 ./falcon-chalenge-0.1.0.sh
 ```
 
+To run the web application in a docker container:
+
+```sh
+git clone https://github.com/gaetanBloch/falcon-challenge.git
+cd falcon-challenge
+./run-web-container.sh
+```
+
 Open your browser on [http://localhost:8080](http://localhost:8080), you should have a web page looking like this:
 
 ![UI](resources/ui.png)

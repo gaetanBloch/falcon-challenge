@@ -37,7 +37,7 @@ class GalaxyDbFileReaderTest {
 
         // WHEN
         Exception exception = catchException(() ->
-            galaxyDbFileReader.readFile("src/test/resources/foo.db")
+            galaxyDbFileReader.readFile("foo.db")
         );
 
         // THEN

@@ -4,13 +4,20 @@ import com.google.common.collect.RowSortedTable;
 import com.google.common.collect.TreeBasedTable;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.core.Response.Status;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 @Slf4j
 @ApplicationScoped
@@ -21,8 +28,19 @@ public final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
 
     @Override
     public MutableValueGraph<String, Integer> readFile(String dbFilePath) {
-        MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
-        String dbConnectionString = JDBC_PREFIX + dbFilePath;
+        final MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
+        String dbFileName = FilenameUtils.getName(dbFilePath);
+        File file;
+        try (InputStream configStream = Thread.currentThread().getContextClassLoader()
+            .getResourceAsStream(dbFileName)) {
+            file = File.createTempFile(dbFileName, FilenameUtils.getExtension(dbFileName));
+            file.deleteOnExit();
+            FileUtils.copyInputStreamToFile(configStream, file);
+        } catch (IOException e) {
+            throw new GalaxyDbException("Could not find the Falcon Config file", e);
+        }
+
+        String dbConnectionString = JDBC_PREFIX + file.getAbsolutePath();
         try (Connection connection = DriverManager.getConnection(dbConnectionString)) {
             RowSortedTable<String, String, Integer> routes = createRoutesFromDb(connection);
             routes.rowKeySet().forEach(
