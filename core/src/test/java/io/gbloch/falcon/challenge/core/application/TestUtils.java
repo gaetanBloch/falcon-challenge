@@ -10,7 +10,7 @@ public final class TestUtils {
     public static final String CONFIG_FILE_PATH = "src/test/resources/millenium-falcon.json";
     public static final String CONFIG_FILE_PATH_INVALID = "src/test/resources/millenium-falcon-invalid.json";
     public static final String CONFIG_FILE_PATH_VIOLATION = "src/test/resources/millenium-falcon-violation.json";
-    public static final String DB_FILE_PATH = "src/test/resources/universe.db";
+    public static final String DB_FILE_PATH = "universe.db";
     public static final String TATOOINE = "Tatooine";
     public static final String DAGOBAH = "Dagobah";
     public static final String HOTH = "Hoth";
