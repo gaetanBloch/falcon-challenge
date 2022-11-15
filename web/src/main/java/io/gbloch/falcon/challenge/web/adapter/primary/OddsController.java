@@ -3,6 +3,7 @@ package io.gbloch.falcon.challenge.web.adapter.primary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gbloch.falcon.challenge.core.application.FalconCoreException;
 import io.gbloch.falcon.challenge.core.application.input.port.ComputeOddsUseCase;
+import io.gbloch.falcon.challenge.core.common.ResourceFileUtils;
 import io.gbloch.falcon.challenge.core.domain.Empire;
 import io.smallrye.common.constraint.NotNull;
 import java.io.File;
@@ -92,18 +93,14 @@ public class OddsController {
         // Need to get the inputstream of the resource file inside the native/UBER-JAR because
         // the file is not accessible from the file system as a regular jar file.
         File file;
-        try (InputStream configStream = Thread.currentThread().getContextClassLoader()
-            .getResourceAsStream("millenium-falcon.json")){
-            file = File.createTempFile("millenium-falcon", ".json");
-            file.deleteOnExit();
-            FileUtils.copyInputStreamToFile(configStream, file);
+        try {
+            file = ResourceFileUtils.createTempFileFromResource("millenium-falcon.json");
         } catch (IOException e) {
             return new ErrorResponse(
                 "Could not find the Falcon Config file",
                 Status.INTERNAL_SERVER_ERROR
             ).toResponse();
         }
-
         try {
             int odds = computeOddsUseCase.whatAreTheOdds(file.getPath(), empire);
             return Response.ok(odds).build();

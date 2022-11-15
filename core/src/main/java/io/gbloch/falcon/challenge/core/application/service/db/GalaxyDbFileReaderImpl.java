@@ -4,6 +4,7 @@ import com.google.common.collect.RowSortedTable;
 import com.google.common.collect.TreeBasedTable;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import io.gbloch.falcon.challenge.core.common.ResourceFileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,15 +32,11 @@ public final class GalaxyDbFileReaderImpl implements GalaxyDbFileReader {
         final MutableValueGraph<String, Integer> galaxy = ValueGraphBuilder.directed().build();
         String dbFileName = FilenameUtils.getName(dbFilePath);
         File file;
-        try (InputStream configStream = Thread.currentThread().getContextClassLoader()
-            .getResourceAsStream(dbFileName)) {
-            file = File.createTempFile(dbFileName, FilenameUtils.getExtension(dbFileName));
-            file.deleteOnExit();
-            FileUtils.copyInputStreamToFile(configStream, file);
+        try {
+            file = ResourceFileUtils.createTempFileFromResource(dbFileName);
         } catch (IOException e) {
-            throw new GalaxyDbException("Could not find the Falcon Config file", e);
+            throw new GalaxyDbException("Could not find Galaxy DB file", e);
         }
-
         String dbConnectionString = JDBC_PREFIX + file.getAbsolutePath();
         try (Connection connection = DriverManager.getConnection(dbConnectionString)) {
             RowSortedTable<String, String, Integer> routes = createRoutesFromDb(connection);
