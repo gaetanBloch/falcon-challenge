@@ -137,6 +137,7 @@ target/
 
 # Maven Wrapper (not excluded)
 !.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
 
 ######################
 # Gradle
