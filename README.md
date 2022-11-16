@@ -1,3 +1,6 @@
+[![Falcon Challenge CI](https://github.com/gaetanBloch/falcon-challenge/actions/workflows/workflow.yml/badge.svg)](https://github.com/gaetanBloch/falcon-challenge/actions)
+[![codecov](https://codecov.io/gh/gaetanBloch/falcon-challenge/branch/main/graph/badge.svg?token=FzhPJc8wa3)](https://codecov.io/gh/gaetanBloch/falcon-challenge)
+
 # Millenium Falcon Challenge
 
 ## What are the odds?
