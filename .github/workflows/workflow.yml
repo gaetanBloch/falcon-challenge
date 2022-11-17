@@ -7,6 +7,7 @@ on:
 
 env:
   USER: gaetanbloch
+  REPO: falconchallenge
 
 jobs:
   pipeline:
@@ -35,7 +36,7 @@ jobs:
       - name: Package the application
         run: |
           chmod +x mvnw
-          ./mvnw -ntp package -pl web -am --batch-mode -DskipTests
+          ./mvnw -ntp package -pl web -am --batch-mode -Dquarkus.package.type=uber-jar -DskipTests
       - name: Login to the Github Container Registry
         uses: docker/login-action@v2
         with:
@@ -46,5 +47,5 @@ jobs:
         run: |
           cd web
           docker build -f src/main/docker/Dockerfile.uber-jar \
-          -t ghcr.io/${{ env.USER }}/${{ github.repository }}:latest .
-          docker push ghcr.io/${{ env.USER}}/${{ github.repository }}:latest
+          -t ghcr.io/${{ env.USER }}/${{ env.REPO }}:latest .
+          docker push ghcr.io/${{ env.USER }}/${{ env.REPO }}:latest
