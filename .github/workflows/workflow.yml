@@ -1,5 +1,10 @@
 name: Falcon Challenge CI
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
 env:
   USER: gaetanbloch
 
@@ -41,5 +46,5 @@ jobs:
         run: |
           cd web
           docker build -f src/main/docker/Dockerfile.uber-jar \
-          -t ghcr.io/${{ env.USER}}/{{ github.repository }}:latest .
-          docker push ghcr.io/${{ env.USER}}/{{ github.repository }}:latest
+          -t ghcr.io/${{ env.USER }}/${{ github.repository }}:latest .
+          docker push ghcr.io/${{ env.USER}}/${{ github.repository }}:latest
