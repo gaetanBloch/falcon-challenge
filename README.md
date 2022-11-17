@@ -34,7 +34,14 @@ cd falcon-chalenge-0.1.0/web
 ./falcon-chalenge-0.1.0.sh
 ```
 
-To run the web application in a docker container:
+To run the web application in a docker container from the Github container registry:
+
+```sh
+docker pull ghcr.io/gaetanbloch/falconchallenge:latest
+docker run -i --rm -p 8080:8080 ghcr.io/gaetanbloch/falconchallenge:latest
+```
+
+To run the web application in a docker container after building the image locally:
 
 ```sh
 git clone https://github.com/gaetanBloch/falcon-challenge.git
