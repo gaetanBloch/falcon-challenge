@@ -25,7 +25,7 @@ The web application will be composed of a backend (the Millennium Falcon onboard
 
 If you need to run locally the project:
 - Install [Java 17+](https://jdk.java.net/archive/)
-- Download latest release of the project : [v0.1.0](https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz) with:
+- Download latest release of the project [v0.1.0](https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz) with:
 
 ```sh
 wget https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz
@@ -54,7 +54,7 @@ cd falcon-chalenge-0.1.0/web
 ./falcon-chalenge-0.1.0.sh
 ```
 
-To run the web application in a docker container after building the image locally:
+#### To run the web application in a docker container after building the image locally:
 
 ```sh
 git clone https://github.com/gaetanBloch/falcon-challenge.git
