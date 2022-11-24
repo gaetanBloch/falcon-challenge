@@ -3,6 +3,8 @@
 
 # Millenium Falcon Challenge
 
+**cf [Dataiku Challenge](https://github.com/dataiku/millenium-falcon-challenge)**
+
 ## What are the odds?
 
 The Death Star - the Empire's ultimate weapon - is almost operational and is currently approaching the Endor planet. The countdown has started.
