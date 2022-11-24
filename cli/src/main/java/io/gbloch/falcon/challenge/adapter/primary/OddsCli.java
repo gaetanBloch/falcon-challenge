@@ -52,7 +52,8 @@ public class OddsCli implements Runnable, QuarkusApplication {
         }
         try {
             System.out.println(
-                computeOddsUseCase.whatAreTheOdds(new File(falconConfigFilePath).getAbsolutePath(),
+                computeOddsUseCase.whatAreTheOdds(
+                    new File(falconConfigFilePath).getAbsolutePath(),
                     empire));
         } catch (FalconCoreException e) {
             System.err.println("Error while calculating the odds: " + e);

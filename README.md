@@ -21,24 +21,37 @@ The web application will be composed of a backend (the Millennium Falcon onboard
 
 ### Prerequisites
 
+- Install [Docker](https://www.docker.com/)
+
+If you need to run locally the project:
 - Install [Java 17+](https://jdk.java.net/archive/)
-- Download latest release of the project : [v0.1.0](https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-chalenge-0.1.0.tar.gz)
-- Untar the project `tar -xzf falcon-chalenge-0.1.0.tar.gz`
+- Download latest release of the project : [v0.1.0](https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz) with:
+
+```sh
+wget https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz
+```
+
+or
+
+```sh
+curl -L https://github.com/gaetanBloch/falcon-challenge/releases/download/v0.1.0/falcon-challenge-0.1.0.tar.gz
+```
 
 ### Web Application
 
-To run the web application:
-
-```sh
-cd falcon-chalenge-0.1.0/web
-./falcon-chalenge-0.1.0.sh
-```
-
-To run the web application in a docker container from the Github container registry:
+#### To run the web application in a docker container from the Github container registry:
 
 ```sh
 docker pull ghcr.io/gaetanbloch/falconchallenge:latest
 docker run -i --rm -p 8080:8080 ghcr.io/gaetanbloch/falconchallenge:latest
+```
+
+#### To run the web application locally:
+
+```sh
+tar -xzf falcon-chalenge-0.1.0.tar.gz
+cd falcon-chalenge-0.1.0/web
+./falcon-chalenge-0.1.0.sh
 ```
 
 To run the web application in a docker container after building the image locally:
@@ -63,7 +76,7 @@ To run the cli application:
 
 ```sh
 cd falcon-challenge-0.1.0/cli
-./give-me-the-odds.sh <falconConfigFile> <empireFile>
+./give-me-the-odds.sh <falconConfigFilePath> <empireFilePath>
 ```
 
 You can see the usage of the commande by typing:
