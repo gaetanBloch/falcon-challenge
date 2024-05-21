@@ -38,8 +38,8 @@
     <lombok.version>1.18.24</lombok.version>
 
     <jackson-databind.version>2.13.4.2</jackson-databind.version>
-    <guava.version>31.1-jre</guava.version>
-    <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
+    <guava.version>32.0.0-jre</guava.version>
+    <sqlite-jdbc.version>3.39.3.0</sqlite-jdbc.version>
     <commons-io.version>2.11.0</commons-io.version>
 
     <jupiter.junit.version>5.9.1</jupiter.junit.version>
