@@ -39,7 +39,7 @@
 
     <jackson-databind.version>2.13.4.2</jackson-databind.version>
     <guava.version>31.1-jre</guava.version>
-    <sqlite-jdbc.version>3.39.3.0</sqlite-jdbc.version>
+    <sqlite-jdbc.version>3.41.2.2</sqlite-jdbc.version>
     <commons-io.version>2.11.0</commons-io.version>
 
     <jupiter.junit.version>5.9.1</jupiter.junit.version>
